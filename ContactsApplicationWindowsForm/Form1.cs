@@ -7,14 +7,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ContactsBussinesLayer;
 
 namespace ContactsApplicationWindowsForm
 {
     public partial class Form1 : Form
     {
+        private void _LoadDataContacts()
+        {
+
+
+            DataTable dt = clsContacts.GetAllContact();
+
+            dtgContacts.DataSource = dt;
+
+
+        }
         public Form1()
         {
             InitializeComponent();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            _LoadDataContacts();
+        }
+
+        
     }
 }
