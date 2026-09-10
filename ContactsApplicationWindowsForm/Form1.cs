@@ -33,6 +33,71 @@ namespace ContactsApplicationWindowsForm
             _LoadDataContacts();
         }
 
-        
+        private void btnAddNew_Click(object sender, EventArgs e)
+        {
+            frmContacts frm = new frmContacts(-1);
+            frm.ShowDialog();
+
+            _LoadDataContacts();
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            if (dtgContacts.SelectedRows.Count > 0)
+            {
+
+                if (MessageBox.Show("Are you sure delete this Contact ?", "Sure", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                {
+
+                    int ID = Convert.ToInt16(dtgContacts.SelectedRows[0].Cells[0].Value);
+
+                    if (clsContacts.DeletContactByID(ID))
+                    {
+
+                        MessageBox.Show("the Deleted Contact Is Successfuly", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        _LoadDataContacts();
+                    }
+                    else
+                    {
+                        MessageBox.Show("the Deleted Contact Is Failed", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                }
+
+            }
+        }
+        private void dtgContacts_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
+            {
+                dtgContacts.ClearSelection();
+                dtgContacts.Rows[e.RowIndex].Selected = true;
+            }
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int id = 0;
+
+            id = Convert.ToUInt16(dtgContacts.SelectedCells[0].Value);
+
+
+            frmContacts frm = new frmContacts(id);
+            frm.ShowDialog();
+
+            _LoadDataContacts();
+        }
     }
+
+
+
+
+
 }
+
+
+
+        
+    
+
