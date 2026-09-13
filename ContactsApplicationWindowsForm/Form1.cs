@@ -23,6 +23,18 @@ namespace ContactsApplicationWindowsForm
 
 
         }
+        private void _FillCountriesInCompoBox()
+        {
+
+            DataTable dt = clsCountries.GetAllCountries();
+
+
+            foreach (DataRow row in dt.Rows)
+            {
+                comboBox1.Items.Add(row["CountryName"]);
+
+            }
+        }
         public Form1()
         {
             InitializeComponent();
@@ -30,7 +42,9 @@ namespace ContactsApplicationWindowsForm
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            comboBox1.SelectedIndex = 0;
             _LoadDataContacts();
+            _FillCountriesInCompoBox();
         }
 
         private void btnAddNew_Click(object sender, EventArgs e)
@@ -87,6 +101,34 @@ namespace ContactsApplicationWindowsForm
             frm.ShowDialog();
 
             _LoadDataContacts();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _LoadDataContacts();
+            DataTable dt = dtgContacts.DataSource as DataTable;
+
+            DataView dataViewCountry = dt.DefaultView;
+            string value = comboBox1.SelectedItem.ToString();
+
+            if (comboBox1.SelectedItem.ToString() == "AllCountries")
+            {
+                dataViewCountry.RowFilter ="";
+            }
+            else
+            {
+                int CountryID = Convert.ToInt16(clsCountries.Find(value).CountryID);
+
+
+                dataViewCountry.RowFilter = $"CountryID={CountryID}";
+
+            }
+
+                
+
+            dtgContacts.DataSource = dataViewCountry;
+
+
         }
     }
 
